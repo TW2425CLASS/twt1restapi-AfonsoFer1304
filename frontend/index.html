@@ -1,5 +1,48 @@
 <!-- Página CRUD de Alunos -->
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestão de Alunos</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>Gestão de Alunos</h1>
 
+    <form id="alunoForm">
+      <input type="text" id="nome" placeholder="Nome" required>
+      <input type="text" id="apelido" placeholder="Apelido" required>
+      <select id="curso" required title="Curso">
+        <option value="">-- Selecione o curso --</option>
+      </select>
+      <select id="anoCurricular" required title="Ano Curricular">
+        <option value="">-- Selecione o ano --</option>
+        <option value="1">1º ano</option>
+        <option value="2">2º ano</option>
+        <option value="3">3º ano</option>
+      </select>
+      <button type="submit" id="guardarBtn">Guardar</button>
+      <button type="button" id="cancelarBtn">Cancelar</button>
+    </form>
+
+    <input type="text" id="pesquisa" placeholder="🔍 Procurar aluno pelo nome ou apelido..." />
+
+    <ul id="listaAlunos"></ul>
+  </div>
+
+  <div id="modal" class="modal hidden">
+  <div class="modal-content">
+    <p>Deseja realmente apagar este aluno?</p>
+    <button id="confirmDelete">Sim</button>
+    <button id="cancelDelete">Não</button>
+  </div>
+</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
 
 
 

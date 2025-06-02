@@ -3,23 +3,51 @@
     {
       "nome": "André",
       "apelido": "Gonçalves",
-      "curso": 1,
-      "anoCurricular": 2,
+      "curso": "Engenharia de Redes e Sistemas de Computadores",
+      "anoCurricular": 1,
       "id": "f551"
     },
     {
-      "id": "e1af",
       "nome": "Afonso",
       "apelido": "Ferreira",
-      "curso": 2,
-      "anoCurricular": 3
+      "curso": "Engenharia da Computação Gráfica e Multimédia",
+      "anoCurricular": 3,
+      "id": "e1af"
     },
     {
-      "id": "af7c",
       "nome": "João",
       "apelido": "Alves",
-      "curso": 2,
-      "anoCurricular": 3
+      "curso": "Engenharia de Redes e Sistemas de Computadores",
+      "anoCurricular": 2,
+      "id": "af7c"
+    },
+    {
+      "id": "0ad2",
+      "nome": "Tomas",
+      "apelido": "Ribeiro",
+      "curso": "Engenharia da Computação Gráfica e Multimédia",
+      "anoCurricular": 1
+    },
+    {
+      "id": "7803",
+      "nome": "Diogo",
+      "apelido": "Santos",
+      "curso": "Engenharia da Computação Gráfica e Multimédia",
+      "anoCurricular": 1
+    },
+    {
+      "id": "c0bd",
+      "nome": "Guilherme",
+      "apelido": "Piaia",
+      "curso": "Engenharia de Redes e Sistemas de Computadores",
+      "anoCurricular": 2
+    },
+    {
+      "id": "51c1",
+      "nome": "Afonso",
+      "apelido": "Silva",
+      "curso": "Engenharia de Redes e Sistemas de Computadores",
+      "anoCurricular": 1
     }
   ],
   "cursos": [
