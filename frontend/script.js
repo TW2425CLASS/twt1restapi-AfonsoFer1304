@@ -1,5 +1,7 @@
 // JS para operações CRUD com Fetch API
-const API_URL = "http://localhost:3001/alunos";
+
+// URL para a API real (Express + MongoDB)
+const API_URL = "http://localhost:3000/api/alunos";
 
 const form = document.getElementById("alunoForm");
 const nome = document.getElementById("nome");
@@ -14,7 +16,7 @@ let idEditando = null;
 
 // Carrega os cursos disponíveis
 async function carregarCursos() {
-  const res = await fetch("http://localhost:3001/cursos");
+  const res = await fetch("http://localhost:3000/api/cursos");
   const cursos = await res.json();
 
   curso.innerHTML = '<option value="">-- Selecione o curso --</option>';
@@ -59,7 +61,7 @@ function mostrarAlunos(alunos) {
 
     const btnApagar = document.createElement("button");
     btnApagar.innerText = "🗑️ Apagar";
-    btnApagar.addEventListener("click", () => apagarAluno(aluno.id));
+    btnApagar.addEventListener("click", () => apagarAluno(aluno._id)); // ✅ Agora usa _id
 
     botoes.appendChild(btnEditar);
     botoes.appendChild(btnApagar);
@@ -70,7 +72,6 @@ function mostrarAlunos(alunos) {
     lista.appendChild(li);
   });
 }
-
 
 // Submeter formulário (adicionar ou atualizar)
 form.addEventListener("submit", async (e) => {
@@ -87,7 +88,6 @@ form.addEventListener("submit", async (e) => {
     alert("Preencha todos os campos!");
     return;
   }
-
 
   if (idEditando) {
     await fetch(`${API_URL}/${idEditando}`, {
@@ -115,16 +115,13 @@ function editarAluno(aluno) {
   apelido.value = aluno.apelido;
   curso.value = aluno.curso;
   anoCurricular.value = aluno.anoCurricular;
-  idEditando = aluno.id;
+  idEditando = aluno._id;
   cancelarBtn.style.display = "inline-block";
 }
 
 // Apagar aluno
 async function apagarAluno(id) {
-  if (confirm("Deseja realmente apagar este aluno?")) {
-    await fetch(`${API_URL}/${id}`, { method: "DELETE" });
-    carregarAlunos();
-  }
+  mostrarModal(id);
 }
 
 // Cancelar edição
