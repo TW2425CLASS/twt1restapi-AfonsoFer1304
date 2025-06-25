@@ -12,7 +12,7 @@
     "dev": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Afonso Araujo Ferreira",
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
