@@ -22,7 +22,7 @@ const swaggerOptions = {
       { url: "https://tw-restapi-afonsofer1304.onrender.com/api" },
     ],
   },
-  apis: ["./routes/*.js"], // CORRIGIDO: pegar todos os arquivos JS dentro da pasta routes
+  apis: ["./routes/*.js"],
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
