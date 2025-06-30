@@ -4,19 +4,12 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const swaggerUi = require("swagger-ui-express");
 const swaggerJsDoc = require("swagger-jsdoc");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Detectar ambiente
-const isProduction = process.env.NODE_ENV === "production";
-
-// Base URL para Swagger (usar variável ou fallback)
-const baseUrl = isProduction
-  ? process.env.BASE_URL || `https://tw-restapi-afonsofer1304.onrender.com`
-  : `http://localhost:${PORT}`;
-
-// Configuração Swagger
+// Configuração do Swagger
 const swaggerOptions = {
   definition: {
     openapi: "3.0.0",
@@ -26,34 +19,45 @@ const swaggerOptions = {
       description: "Documentação automática da API RESTful",
     },
     servers: [
-      { url: `${baseUrl}/api` }
+      { url: "https://tw-restapi-afonsofer1304.onrender.com/api" },
     ],
   },
-  apis: ["./routes/*.js"], // ajuste conforme a localização dos seus arquivos de rota
+  apis: ["./routes/*.js"], // CORRIGIDO: pegar todos os arquivos JS dentro da pasta routes
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Middlewares
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// Documentação da API
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+// Servir frontend estático (se tiver)
+// Muda o "public" para a pasta que tem o teu frontend build
+app.use(express.static(path.join(__dirname, "public")));
 
-// Rotas
+// Rotas da API
 app.use("/api/alunos", require("./routes/alunoRoutes"));
 app.use("/api/cursos", require("./routes/cursoRoutes"));
 
-// Conexão com MongoDB e inicialização do servidor
-mongoose.connect(process.env.MONGO_URI)
+// Rota fallback para o frontend SPA (single page app)
+// Usa "*" para capturar todas as rotas que não são API
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
+
+// Conectar ao MongoDB e iniciar servidor
+mongoose
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("🔌 Ligado ao MongoDB Atlas");
     app.listen(PORT, () => {
-      console.log(`Servidor a correr na porta ${PORT}`);
-      console.log(`Documentação da API: ${baseUrl}/api-docs`);
+      console.log(`🚀 Servidor a correr na porta ${PORT}`);
+      console.log(
+        `📘 Documentação da API disponível em: https://tw-restapi-afonsofer1304.onrender.com/api-docs`
+      );
     });
   })
-  .catch(err => {
+  .catch((err) => {
     console.error("❌ Erro ao ligar ao MongoDB:", err);
   });
