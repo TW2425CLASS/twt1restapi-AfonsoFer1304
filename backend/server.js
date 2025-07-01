@@ -19,44 +19,43 @@ const swaggerOptions = {
       description: "Documentação automática da API RESTful",
     },
     servers: [
-      { url: "https://tw-restapi-afonsofer1304.onrender.com/api" },
+      { url: "https://tw-restapi-afonsofer1304.onrender.com/api" }, // BACKEND URL
     ],
   },
-  apis: ["./routes/*.js"],
+  apis: ["./routes/*.js"], // Swagger vai ler as anotações nos ficheiros de rotas
 };
 
 const swaggerSpec = swaggerJsDoc(swaggerOptions);
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// Middleware
-app.use(cors());
+// Middlewares
+app.use(cors({
+  origin: "https://twrestapi-app.onrender.com", // Permite apenas o teu frontend
+}));
 app.use(express.json());
 
-// Servir frontend estático (se tiver)
-app.use(express.static(path.join(__dirname, "../frontend")));
+// Swagger Docs
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+// Servir frontend estático
+app.use(express.static(path.join(__dirname, "../frontend")));
 
 // Rotas da API
 app.use("/api/alunos", require("./routes/alunoRoutes"));
 app.use("/api/cursos", require("./routes/cursoRoutes"));
 
-// Rota fallback para o frontend SPA (single page app)
-// Usa "*" para capturar todas as rotas que não são API
-app.get("*", (req, res) => {
+// Fallback para SPA (qualquer rota que não comece por /api ou /api-docs)
+app.get(/^\/(?!api|api-docs).*/, (req, res) => {
   res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
 
-
-// Conectar ao MongoDB e iniciar servidor
+// Conexão com MongoDB e arranque do servidor
 mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("🔌 Ligado ao MongoDB Atlas");
     app.listen(PORT, () => {
       console.log(`🚀 Servidor a correr na porta ${PORT}`);
-      console.log(
-        `📘 Documentação da API disponível em: https://tw-restapi-afonsofer1304.onrender.com/api-docs`
-      );
+      console.log(`📘 API docs: https://tw-restapi-afonsofer1304.onrender.com/api-docs`);
     });
   })
   .catch((err) => {
