@@ -4,7 +4,7 @@ const alunoController = require("../controllers/alunoController");
 
 /**
  * @openapi
- * /api/alunos:
+ * /alunos:
  *   get:
  *     summary: Lista todos os alunos
  *     description: Retorna uma lista de todos os alunos registados
@@ -22,7 +22,7 @@ router.get("/", alunoController.getAlunos);
 
 /**
  * @openapi
- * /api/alunos:
+ * /alunos:
  *   post:
  *     summary: Cria um novo aluno
  *     description: Cria um aluno com os dados fornecidos
@@ -44,7 +44,7 @@ router.post("/", alunoController.createAluno);
 
 /**
  * @openapi
- * /api/alunos/{id}:
+ * /alunos/{id}:
  *   put:
  *     summary: Atualiza um aluno existente
  *     description: Atualiza os dados de um aluno pelo ID
@@ -73,7 +73,7 @@ router.put("/:id", alunoController.updateAluno);
 
 /**
  * @openapi
- * /api/alunos/{id}:
+ * /alunos/{id}:
  *   delete:
  *     summary: Apaga um aluno
  *     description: Remove um aluno pelo ID
