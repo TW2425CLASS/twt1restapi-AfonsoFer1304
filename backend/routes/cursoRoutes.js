@@ -4,7 +4,7 @@ const cursoController = require("../controllers/cursoController");
 
 /**
  * @openapi
- * /api/cursos:
+ * /cursos:
  *   get:
  *     summary: Lista todos os cursos
  *     description: Retorna uma lista de todos os cursos registados
@@ -22,7 +22,7 @@ router.get("/", cursoController.getCursos);
 
 /**
  * @openapi
- * /api/cursos/{id}:
+ * /cursos/{id}:
  *   get:
  *     summary: Detalhes de um curso
  *     description: Retorna os detalhes de um curso pelo ID
@@ -45,7 +45,7 @@ router.get("/:id", cursoController.getCursoById);
 
 /**
  * @openapi
- * /api/cursos:
+ * /cursos:
  *   post:
  *     summary: Cria um novo curso
  *     description: Cria um curso com os dados fornecidos
@@ -67,7 +67,7 @@ router.post("/", cursoController.createCurso);
 
 /**
  * @openapi
- * /api/cursos/{id}:
+ * /cursos/{id}:
  *   put:
  *     summary: Atualiza um curso existente
  *     description: Atualiza os dados de um curso pelo ID
@@ -96,7 +96,7 @@ router.put("/:id", cursoController.updateCurso);
 
 /**
  * @openapi
- * /api/cursos/{id}:
+ * /cursos/{id}:
  *   delete:
  *     summary: Apaga um curso
  *     description: Remove um curso pelo ID
