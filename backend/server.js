@@ -33,8 +33,8 @@ app.use(cors());
 app.use(express.json());
 
 // Servir frontend estático (se tiver)
-// Muda o "public" para a pasta que tem o teu frontend build
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "../frontend")));
+
 
 // Rotas da API
 app.use("/api/alunos", require("./routes/alunoRoutes"));
@@ -43,8 +43,9 @@ app.use("/api/cursos", require("./routes/cursoRoutes"));
 // Rota fallback para o frontend SPA (single page app)
 // Usa "*" para capturar todas as rotas que não são API
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
+  res.sendFile(path.join(__dirname, "../frontend", "index.html"));
 });
+
 
 // Conectar ao MongoDB e iniciar servidor
 mongoose
