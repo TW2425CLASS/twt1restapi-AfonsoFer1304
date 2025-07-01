@@ -1,7 +1,8 @@
 // JS para operações CRUD com Fetch API
 
-// URL para a API real (Express + MongoDB)
-const API_URL = "http://localhost:3000/api/alunos";
+// URL para a API real no Render (Express + MongoDB)
+const API_URL = "https://tw-restapi-afonsofer1304.onrender.com/api/alunos";
+const CURSOS_API_URL = "https://tw-restapi-afonsofer1304.onrender.com/api/cursos";
 
 const form = document.getElementById("alunoForm");
 const nome = document.getElementById("nome");
@@ -16,23 +17,35 @@ let idEditando = null;
 
 // Carrega os cursos disponíveis
 async function carregarCursos() {
-  const res = await fetch("http://localhost:3000/api/cursos");
-  const cursos = await res.json();
+  try {
+    const res = await fetch(CURSOS_API_URL);
+    if (!res.ok) throw new Error("Erro ao carregar cursos");
+    const cursos = await res.json();
 
-  curso.innerHTML = '<option value="">-- Selecione o curso --</option>';
-  cursos.forEach(c => {
-    const opt = document.createElement("option");
-    opt.value = c.nomeDoCurso;
-    opt.textContent = c.nomeDoCurso;
-    curso.appendChild(opt);
-  });
+    curso.innerHTML = '<option value="">-- Selecione o curso --</option>';
+    cursos.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.nomeDoCurso;
+      opt.textContent = c.nomeDoCurso;
+      curso.appendChild(opt);
+    });
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possível carregar os cursos.");
+  }
 }
 
 // Carrega a lista de alunos da API
 async function carregarAlunos() {
-  const res = await fetch(API_URL);
-  const alunos = await res.json();
-  mostrarAlunos(alunos);
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error("Erro ao carregar alunos");
+    const alunos = await res.json();
+    mostrarAlunos(alunos);
+  } catch (error) {
+    console.error(error);
+    alert("Não foi possível carregar os alunos.");
+  }
 }
 
 // Mostra a lista de alunos no HTML
@@ -61,7 +74,7 @@ function mostrarAlunos(alunos) {
 
     const btnApagar = document.createElement("button");
     btnApagar.innerText = "🗑️ Apagar";
-    btnApagar.addEventListener("click", () => apagarAluno(aluno._id)); // ✅ Agora usa _id
+    btnApagar.addEventListener("click", () => apagarAluno(aluno._id));
 
     botoes.appendChild(btnEditar);
     botoes.appendChild(btnApagar);
@@ -89,24 +102,29 @@ form.addEventListener("submit", async (e) => {
     return;
   }
 
-  if (idEditando) {
-    await fetch(`${API_URL}/${idEditando}`, {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(aluno)
-    });
-    idEditando = null;
-    cancelarBtn.style.display = "none";
-  } else {
-    await fetch(API_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(aluno)
-    });
-  }
+  try {
+    if (idEditando) {
+      await fetch(`${API_URL}/${idEditando}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(aluno)
+      });
+      idEditando = null;
+      cancelarBtn.style.display = "none";
+    } else {
+      await fetch(API_URL, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(aluno)
+      });
+    }
 
-  form.reset();
-  carregarAlunos();
+    form.reset();
+    carregarAlunos();
+  } catch (error) {
+    console.error(error);
+    alert("Erro ao salvar o aluno.");
+  }
 });
 
 // Preencher formulário com dados de aluno existente
@@ -139,15 +157,21 @@ function normalizarTexto(str) {
 // Filtro de pesquisa por nome ou apelido
 pesquisa.addEventListener("input", async () => {
   const termo = normalizarTexto(pesquisa.value);
-  const res = await fetch(API_URL);
-  const alunos = await res.json();
+  try {
+    const res = await fetch(API_URL);
+    if (!res.ok) throw new Error("Erro ao carregar alunos para pesquisa");
+    const alunos = await res.json();
 
-  const alunosFiltrados = alunos.filter(aluno =>
-    normalizarTexto(aluno.nome).includes(termo) ||
-    normalizarTexto(aluno.apelido).includes(termo)
-  );
+    const alunosFiltrados = alunos.filter(aluno =>
+      normalizarTexto(aluno.nome).includes(termo) ||
+      normalizarTexto(aluno.apelido).includes(termo)
+    );
 
-  mostrarAlunos(alunosFiltrados);
+    mostrarAlunos(alunosFiltrados);
+  } catch (error) {
+    console.error(error);
+    alert("Erro na pesquisa.");
+  }
 });
 
 const modal = document.getElementById("modal");
@@ -168,9 +192,14 @@ function esconderModal() {
 
 btnConfirmDelete.addEventListener("click", async () => {
   if (idParaApagar) {
-    await fetch(`${API_URL}/${idParaApagar}`, { method: "DELETE" });
-    carregarAlunos();
-    esconderModal();
+    try {
+      await fetch(`${API_URL}/${idParaApagar}`, { method: "DELETE" });
+      carregarAlunos();
+      esconderModal();
+    } catch (error) {
+      console.error(error);
+      alert("Erro ao apagar aluno.");
+    }
   }
 });
 
@@ -183,6 +212,6 @@ function apagarAluno(id) {
   mostrarModal(id);
 }
 
-// Iniciar
+// Inicialização
 carregarCursos();
 carregarAlunos();
