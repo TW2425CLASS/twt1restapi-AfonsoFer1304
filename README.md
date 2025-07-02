@@ -18,6 +18,8 @@ Este projeto implementa uma aplicação web completa com interface de gestão de
 🔗 **Frontend:** 
 - App: https://api-7483zukgp-afonso-ferreiras-projects.vercel.app   
 - URL pública do front-end: https://vercel.com/afonso-ferreiras-projects/api/HeMiUMYgGjLHTNNZwf5SEDdBtAPb
+
+- URL da aplicação no render frontend e backend: https://tw-restapi-afonsofer1304.onrender.com
                 
 
 ## Endpoints da API
